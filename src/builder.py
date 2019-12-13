@@ -11,6 +11,8 @@ def main():
     conditions = get_conditions()
     create_header(worksheet, conditions)
 
+    get_configs(conditions)
+
     workbook.close()
 
 def print_welcome():
@@ -24,9 +26,10 @@ def get_name():
     return input(" => ")
 
 def get_conditions():
-    print("\nPlease experimental conditions/variables separated by commas:")
+    print("\nPlease enter experimental conditions/variables separated by commas:")
     print("For example: Bed Elevation, Patient Orientation")
-    return input(" => ").split(",")
+    conditions = input(" => ").split(",")
+    return [condition.strip() for condition in conditions]
 
 def create_header(worksheet, conditions):
 
@@ -35,6 +38,19 @@ def create_header(worksheet, conditions):
 
     for ix, condition in enumerate(conditions):
         worksheet.write(f"{alphabet[ix]}1", condition)
+
+def get_configs(conditions):
+
+    protocol = {condition: "" for condition in conditions}
+
+    print()
+    for condition in conditions:
+        print(f"Please enter configurations of {condition} separated by commas:")
+        print("For example: 0 degrees, 30 degrees, 45 degrees")
+        config = input(" => ").split(",")
+        protocol[condition] = [x.strip() for x in config]
+
+    print(protocol)
 
 if __name__ == "__main__":
     main()
